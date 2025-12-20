@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../data/providers/repository_providers.dart';
 import '../../presentation/pages/pages.dart';
-import '../../presentation/widgets/main_scaffold.dart';
+import '../../presentation/layouts/retain_learn_shell.dart';
 
 /// GoRouter provider for navigation
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -61,14 +61,24 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const ContactPage(),
       ),
 
-      // Protected Routes with Bottom Navigation
+      // Protected Routes with Bottom Navigation (RetainLearn Shell)
       ShellRoute(
-        builder: (context, state, child) => MainScaffold(child: child),
+        builder: (context, state, child) => RetainLearnShell(child: child),
         routes: [
           GoRoute(
             path: '/dashboard',
             name: 'dashboard',
             builder: (context, state) => const DashboardPage(),
+          ),
+          GoRoute(
+            path: '/chat',
+            name: 'chat',
+            builder: (context, state) => const ChatPage(),
+          ),
+          GoRoute(
+            path: '/sources',
+            name: 'sources',
+            builder: (context, state) => const SourcesPage(),
           ),
           GoRoute(
             path: '/assignments',

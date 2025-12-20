@@ -22,3 +22,6 @@ export 'voice_reading_page.dart';
 // All other pages (ClassroomsPage, ToolsPage, ProfilePage, SettingsPage,
 // OnboardingPage, LearningStylePage, NotificationsPage, ProgressPage, ErrorPage)
 // are in placeholder_pages.dart
+
+export 'chat_page.dart';
+export 'sources_page.dart';

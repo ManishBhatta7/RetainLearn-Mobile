@@ -5,7 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/constants/app_constants.dart';
 import 'core/router/app_router.dart';
-import 'core/theme/app_theme.dart';
+import 'core/theme/retain_learn_theme.dart';
 
 /// Main entry point for RetainLearn Flutter App
 /// 
@@ -43,9 +43,8 @@ class RetainLearnApp extends ConsumerWidget {
     return MaterialApp.router(
       title: AppConstants.appName,
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
+      theme: RetainLearnTheme.lightTheme,
+      themeMode: ThemeMode.light,
       routerConfig: router,
     );
   }
