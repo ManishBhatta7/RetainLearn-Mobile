@@ -4,7 +4,14 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/theme/retain_learn_theme.dart';
+import '../widgets/studio_card.dart';
 
+/// Dashboard Page - NotebookLM Studio Grid
+///
+/// Features:
+/// - Personalized welcome header
+/// - Masonry grid of StudioCards and MetricCards
+/// - Responsive layout (2 columns mobile, 4 columns desktop)
 class DashboardPage extends ConsumerWidget {
   const DashboardPage({super.key});
 
@@ -12,6 +19,8 @@ class DashboardPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = Supabase.instance.client.auth.currentUser;
     final displayName = user?.userMetadata?['full_name'] ?? 'Scholar';
+    final screenWidth = MediaQuery.of(context).size.width;
+    final crossAxisCount = screenWidth > 900 ? 4 : (screenWidth > 600 ? 3 : 2);
 
     return Scaffold(
       backgroundColor: RetainLearnTheme.paperOffWhite,
@@ -19,21 +28,26 @@ class DashboardPage extends ConsumerWidget {
         slivers: [
           // Header
           SliverPadding(
-            padding: const EdgeInsets.fromLTRB(24, 60, 24, 24),
+            padding: EdgeInsets.fromLTRB(
+              24,
+              MediaQuery.of(context).padding.top + 24,
+              24,
+              24,
+            ),
             sliver: SliverToBoxAdapter(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Welcome back,',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           color: RetainLearnTheme.textMedium,
                         ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
                   Text(
                     displayName,
-                    style: Theme.of(context).textTheme.displayMedium,
+                    style: Theme.of(context).textTheme.displaySmall,
                   ),
                 ],
               ),
@@ -45,85 +59,103 @@ class DashboardPage extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 24),
             sliver: SliverToBoxAdapter(
               child: StaggeredGrid.count(
-                crossAxisCount: MediaQuery.of(context).size.width > 600 ? 4 : 2,
+                crossAxisCount: crossAxisCount,
                 mainAxisSpacing: 16,
                 crossAxisSpacing: 16,
                 children: [
-                   // Large Tile: Chat Assistant
+                  // Large: AI Assistant
                   StaggeredGridTile.count(
                     crossAxisCellCount: 2,
                     mainAxisCellCount: 2,
-                    child: _DashboardCard(
+                    child: StudioCard(
                       title: 'AI Assistant',
-                      subtitle: 'Ask about your assignments',
-                      icon: Icons.chat_bubble_outline,
-                      color: RetainLearnTheme.tealPrimary,
-                      onTap: () => context.go('/chat'),
+                      subtitle: 'Chat with your learning sources',
+                      icon: Icons.auto_awesome,
+                      accentColor: RetainLearnTheme.tealPrimary,
                       isLarge: true,
+                      onTap: () => context.go('/chat'),
                     ),
                   ),
-                  
-                  // Medium Tile: Upload
+
+                  // Upload Sources
                   StaggeredGridTile.count(
-                    crossAxisCellCount: MediaQuery.of(context).size.width > 600 ? 1: 1,
+                    crossAxisCellCount: 1,
                     mainAxisCellCount: 1,
-                    child: _DashboardCard(
-                      title: 'Upload Source',
-                      subtitle: 'PDFs, Images',
-                      icon: Icons.upload_file,
-                      color: Colors.blueAccent,
+                    child: StudioCard(
+                      title: 'Upload',
+                      subtitle: 'Add new sources',
+                      icon: Icons.add_circle_outline,
+                      accentColor: RetainLearnTheme.sourceAssignment,
                       onTap: () => context.go('/sources'),
                     ),
                   ),
 
-                   // Medium Tile: Assignments
+                  // Assignments
                   StaggeredGridTile.count(
                     crossAxisCellCount: 1,
                     mainAxisCellCount: 1,
-                    child: _DashboardCard(
-                      title: 'Assignments',
-                      subtitle: '3 Pending',
+                    child: StudioCard(
+                      title: 'Tasks',
+                      subtitle: '3 pending',
                       icon: Icons.assignment_outlined,
-                      color: Colors.orangeAccent,
+                      accentColor: Colors.orange,
+                      trailing: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.orange.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          '3',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.orange,
+                          ),
+                        ),
+                      ),
                       onTap: () => context.go('/assignments'),
                     ),
                   ),
 
-                  // Medium Tile: Report Analysis
+                  // Report Analysis - Wide
                   StaggeredGridTile.count(
-                    crossAxisCellCount: MediaQuery.of(context).size.width > 600 ? 2 : 2,
+                    crossAxisCellCount: 2,
                     mainAxisCellCount: 1,
-                    child: _DashboardCard(
+                    child: StudioCard(
                       title: 'Report Analysis',
-                      subtitle: 'Track your academic growth',
+                      subtitle: 'Scan and track your grades',
                       icon: Icons.analytics_outlined,
-                      color: Colors.purpleAccent,
-                      onTap: () => context.go('/tools/report-upload'), // Assume route exists or creates placeholder
+                      accentColor: RetainLearnTheme.sourceReport,
+                      onTap: () => context.go('/tools/report-upload'),
                     ),
                   ),
-                  
-                   // Small Tile: Voice
+
+                  // Voice Reader
                   StaggeredGridTile.count(
                     crossAxisCellCount: 1,
                     mainAxisCellCount: 1,
-                    child: _DashboardCard(
+                    child: StudioCard(
                       title: 'Voice Reader',
-                      subtitle: 'Listen & Learn',
+                      subtitle: 'Listen & learn',
                       icon: Icons.record_voice_over_outlined,
-                      color: Colors.pinkAccent,
+                      accentColor: RetainLearnTheme.sourceEssay,
                       onTap: () => context.go('/tools/voice-reading'),
                     ),
                   ),
 
-                   // Small Tile: Profile
+                  // Profile
                   StaggeredGridTile.count(
                     crossAxisCellCount: 1,
                     mainAxisCellCount: 1,
-                    child: _DashboardCard(
-                      title: 'My Profile',
-                      subtitle: 'Stats & Settings',
+                    child: StudioCard(
+                      title: 'Profile',
+                      subtitle: 'Stats & settings',
                       icon: Icons.person_outline,
-                      color: RetainLearnTheme.textDark,
+                      accentColor: RetainLearnTheme.textMedium,
                       onTap: () => context.go('/profile'),
                     ),
                   ),
@@ -131,85 +163,10 @@ class DashboardPage extends ConsumerWidget {
               ),
             ),
           ),
-          
+
+          // Bottom padding for floating nav
           const SliverPadding(padding: EdgeInsets.only(bottom: 100)),
         ],
-      ),
-    );
-  }
-}
-
-class _DashboardCard extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final IconData icon;
-  final Color color;
-  final VoidCallback onTap;
-  final bool isLarge;
-
-  const _DashboardCard({
-    required this.title,
-    required this.subtitle,
-    required this.icon,
-    required this.color,
-    required this.onTap,
-    this.isLarge = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 0,
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24),
-        side: BorderSide(color: RetainLearnTheme.grayBorder.withOpacity(0.5)),
-      ),
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Colors.white,
-                isLarge ? color.withOpacity(0.05) : Colors.white,
-              ],
-            ),
-          ),
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Icon(icon, color: color, size: isLarge ? 32 : 24),
-              ),
-              const Spacer(),
-              Text(
-                title,
-                style: isLarge
-                    ? Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)
-                    : Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                subtitle,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: RetainLearnTheme.textMedium,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }
