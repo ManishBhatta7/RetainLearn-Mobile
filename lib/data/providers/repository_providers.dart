@@ -6,6 +6,7 @@ import '../../domain/repositories/assignment_repository.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../repositories/supabase_assignment_repository.dart';
 import '../repositories/supabase_auth_repository.dart';
+import '../repositories/gemini_repository.dart';
 
 /// =============================================================================
 /// SUPABASE CLIENT PROVIDER
@@ -55,6 +56,12 @@ final assignmentRepositoryProvider = Provider<AssignmentRepository>((ref) {
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final client = ref.read(supabaseProvider);
   return SupabaseAuthRepository(client);
+});
+
+/// Provides the GeminiRepository
+final geminiRepositoryProvider = Provider((ref) {
+  final client = ref.read(supabaseProvider);
+  return GeminiRepository(client);
 });
 
 /// =============================================================================
