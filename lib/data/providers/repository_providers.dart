@@ -7,6 +7,8 @@ import '../../domain/repositories/auth_repository.dart';
 import '../repositories/supabase_assignment_repository.dart';
 import '../repositories/supabase_auth_repository.dart';
 import '../repositories/gemini_repository.dart';
+import '../services/tsr_health_api_service.dart';
+import '../services/spaced_repetition_api_service.dart';
 
 /// =============================================================================
 /// SUPABASE CLIENT PROVIDER
@@ -107,13 +109,15 @@ final currentUserProvider = Provider((ref) {
 });
 
 /// Stream of auth state changes
-final authStateProvider = StreamProvider((ref) {
+/// NOTE: Renamed from authStateProvider to avoid conflict with router_provider.dart
+final authStreamProvider = StreamProvider((ref) {
   final authRepo = ref.read(authRepositoryProvider);
   return authRepo.authStateChanges;
 });
 
 /// Whether user is authenticated
-final isAuthenticatedProvider = Provider<bool>((ref) {
+/// NOTE: Renamed from isAuthenticatedProvider to avoid conflict with router_provider.dart
+final isUserAuthenticatedProvider = Provider<bool>((ref) {
   final authRepo = ref.read(authRepositoryProvider);
   return authRepo.isAuthenticated;
 });
@@ -191,5 +195,41 @@ final assignmentsNotifierProvider =
   (ref) {
     final repository = ref.read(assignmentRepositoryProvider);
     return AssignmentsNotifier(repository);
+  },
+);
+
+/// =============================================================================
+/// BACKEND API SERVICE PROVIDERS
+/// =============================================================================
+/// 
+/// These providers expose the API services for communicating with the
+/// custom backend services (TSR Health, Spaced Repetition, etc.)
+/// =============================================================================
+
+
+
+/// Provides the TSR Health API Service
+final tsrHealthApiProvider = Provider<TsrHealthApiService>((ref) {
+  return TsrHealthApiService();
+});
+
+/// Provides the Spaced Repetition API Service
+final spacedRepetitionApiProvider = Provider<SpacedRepetitionApiService>((ref) {
+  return SpacedRepetitionApiService();
+});
+
+/// Provides the TSR Dashboard data for a teacher
+final tsrDashboardProvider = FutureProvider.family<TsrDashboardResponse, String>(
+  (ref, teacherId) async {
+    final api = ref.read(tsrHealthApiProvider);
+    return api.getTeacherDashboard(teacherId);
+  },
+);
+
+/// Provides scheduled reviews for a student
+final scheduledReviewsProvider = FutureProvider.family<ReviewScheduleResponse, String>(
+  (ref, studentId) async {
+    final api = ref.read(spacedRepetitionApiProvider);
+    return api.getScheduledReviews(studentId);
   },
 );

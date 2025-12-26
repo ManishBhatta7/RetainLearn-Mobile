@@ -5,6 +5,7 @@
 export 'landing_page.dart';
 export 'login_page.dart';
 export 'signup_page.dart';
+export 'splash_screen.dart';
 export 'placeholder_pages.dart'; // Contains DemoPage, ContactPage
 
 // Dashboard & Main
@@ -25,3 +26,4 @@ export 'voice_reading_page.dart';
 
 export 'chat_page.dart';
 export 'sources_page.dart';
+

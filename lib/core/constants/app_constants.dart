@@ -15,7 +15,46 @@ class AppConstants {
   static const String supabaseAnonKey =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd3YXJtb2djbWVlaGFqbmV2Ym1pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUyOTc1MjAsImV4cCI6MjA2MDg3MzUyMH0.EiTIeIZMrDjMIufMUEuDr74ydPFHtRAIveTvAkBxTds';
 
-  // API Endpoints (for future custom backend)
+  // Backend API Configuration
+  // For development: use localhost with 10.0.2.2 for Android emulator
+  // For iOS simulator: use localhost
+  // For physical device: use your machine's IP address
+  static const bool useLocalBackend = true;
+  
+  // Local development URLs (use 10.0.2.2 for Android emulator to access host machine)
+  static const String _localHost = '10.0.2.2'; // Android emulator host
+  static const String _localHostIOS = 'localhost'; // iOS simulator
+  
+  // Backend Service Ports
+  static const int tsrHealthPort = 8003;
+  static const int spacedRepetitionPort = 8001;
+  static const int cognitiveLoadPort = 8002;
+  static const int examPrepPort = 8004;  // JEE, NEET, UPSC exam prep
+  static const int boardExamPort = 8005; // CBSE, ICSE board exam
+  static const int apiGatewayPort = 3001;
+  
+  // Backend API Base URLs
+  static String get tsrHealthBaseUrl => useLocalBackend 
+      ? 'http://$_localHost:$tsrHealthPort' 
+      : 'https://api.retainlearn.com';
+  
+  static String get spacedRepetitionBaseUrl => useLocalBackend 
+      ? 'http://$_localHost:$spacedRepetitionPort' 
+      : 'https://api.retainlearn.com';
+  
+  static String get cognitiveLoadBaseUrl => useLocalBackend 
+      ? 'http://$_localHost:$cognitiveLoadPort' 
+      : 'https://api.retainlearn.com';
+
+  static String get examPrepBaseUrl => useLocalBackend 
+      ? 'http://$_localHost:$examPrepPort' 
+      : 'https://api.retainlearn.com';
+
+  static String get boardExamBaseUrl => useLocalBackend 
+      ? 'http://$_localHost:$boardExamPort' 
+      : 'https://api.retainlearn.com';
+
+  // API Endpoints
   static const String customApiBaseUrl = 'https://api.retainlearn.com/v1';
 
   // Local Storage Keys

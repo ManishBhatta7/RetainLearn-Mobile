@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../data/providers/repository_providers.dart';
+import 'router_provider.dart';
 import '../../presentation/pages/pages.dart';
 import '../../presentation/layouts/retain_learn_shell.dart';
+import '../../presentation/screens/board_exam_dashboard_screen.dart';
 
 /// GoRouter provider for navigation
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -19,7 +20,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           state.matchedLocation == '/signup';
       final isPublicRoute = state.matchedLocation == '/' ||
           state.matchedLocation == '/demo' ||
-          state.matchedLocation == '/contact';
+          state.matchedLocation == '/contact' ||
+          state.matchedLocation == '/board-exam';  // Allow demo access
 
       // If not logged in and trying to access protected route
       if (!isLoggedIn && !isLoggingIn && !isPublicRoute) {
@@ -59,6 +61,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: '/contact',
         name: 'contact',
         builder: (context, state) => const ContactPage(),
+      ),
+      
+      // Board Exam Dashboard (Public for demo)
+      GoRoute(
+        path: '/board-exam',
+        name: 'board-exam',
+        builder: (context, state) => const BoardExamDashboardScreen(),
       ),
 
       // Protected Routes with Bottom Navigation (RetainLearn Shell)

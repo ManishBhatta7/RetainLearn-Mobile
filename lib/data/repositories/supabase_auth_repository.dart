@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 
 // Import supabase_flutter but hide the User type to avoid conflict with our domain User
 // AuthUser is automatically re-exported and available
@@ -43,6 +44,7 @@ class SupabaseAuthRepository implements AuthRepository {
     required String email,
     required String password,
   }) async {
+    debugPrint('🔐 AuthRepo: Attempting sign in for $email...');
     try {
       final response = await _client.auth.signInWithPassword(
         email: email,
@@ -50,14 +52,19 @@ class SupabaseAuthRepository implements AuthRepository {
       );
 
       if (response.user == null) {
+        debugPrint('❌ AuthRepo: Sign in failed - No user returned');
         throw RepositoryException(message: 'Sign in failed: No user returned');
       }
 
+      debugPrint('✅ AuthRepo: Sign in successful! User ID: ${response.user!.id}');
+      debugPrint('   Email: ${response.user!.email}');
+      
       // Fetch additional profile data
       final profile = await _fetchProfile(response.user!.id);
       _cachedUser = _mergeUserWithProfile(response.user!, profile);
       return _cachedUser!;
     } on AuthException catch (e) {
+      debugPrint('❌ AuthRepo: Sign in error - ${e.message}');
       throw RepositoryException(message: e.message, originalError: e);
     }
   }
@@ -69,6 +76,8 @@ class SupabaseAuthRepository implements AuthRepository {
     String? fullName,
     UserRole role = UserRole.student,
   }) async {
+    debugPrint('🔐 AuthRepo: Attempting sign up for $email...');
+    debugPrint('   Name: $fullName, Role: ${role.name}');
     try {
       final response = await _client.auth.signUp(
         email: email,
@@ -80,22 +89,31 @@ class SupabaseAuthRepository implements AuthRepository {
       );
 
       if (response.user == null) {
+        debugPrint('❌ AuthRepo: Sign up failed - No user returned');
         throw RepositoryException(message: 'Sign up failed: No user returned');
       }
 
+      debugPrint('✅ AuthRepo: Sign up successful! User ID: ${response.user!.id}');
+      debugPrint('   Email: ${response.user!.email}');
+      debugPrint('   Created at: ${response.user!.createdAt}');
+      
       _cachedUser = _mapAuthUserToUser(response.user!);
       return _cachedUser!;
     } on AuthException catch (e) {
+      debugPrint('❌ AuthRepo: Sign up error - ${e.message}');
       throw RepositoryException(message: e.message, originalError: e);
     }
   }
 
   @override
   Future<void> signOut() async {
+    debugPrint('🔐 AuthRepo: Attempting sign out...');
     try {
       await _client.auth.signOut();
       _cachedUser = null;
+      debugPrint('✅ AuthRepo: Sign out successful!');
     } on AuthException catch (e) {
+      debugPrint('❌ AuthRepo: Sign out error - ${e.message}');
       throw RepositoryException(message: e.message, originalError: e);
     }
   }

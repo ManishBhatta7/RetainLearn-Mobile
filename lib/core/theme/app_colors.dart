@@ -1,80 +1,79 @@
 import 'package:flutter/material.dart';
 
-/// Application color palette
+/// Application color palette - Teal Theme
 /// 
-/// Follows the design system from the web application
+/// Matches the web RetainLearn design with NotebookLM aesthetic
 class AppColors {
   AppColors._();
 
-  // Primary Colors (Purple/Pink gradient theme)
-  static const Color primary = Color(0xFF9333EA); // Purple-600
-  static const Color primaryLight = Color(0xFFA855F7); // Purple-500
-  static const Color primaryDark = Color(0xFF7E22CE); // Purple-700
+  // Primary Colors (Teal theme - matching web)
+  static const Color primary = Color(0xFF0D9488);     // Teal-600
+  static const Color primaryLight = Color(0xFF14B8A6); // Teal-500
+  static const Color primaryDark = Color(0xFF0F766E);  // Teal-700
+  static const Color primarySurface = Color(0xFFF0FDFA); // Teal-50
 
-  // Secondary Colors (Pink accent)
-  static const Color secondary = Color(0xFFDB2777); // Pink-600
-  static const Color secondaryLight = Color(0xFFEC4899); // Pink-500
-  static const Color secondaryDark = Color(0xFFBE185D); // Pink-700
+  // Secondary Colors (Dark teal for accents)
+  static const Color secondary = Color(0xFF115E59);   // Teal-800
+  static const Color secondaryLight = Color(0xFF0D9488);
+  static const Color secondaryDark = Color(0xFF134E4A); // Teal-900
 
   // Accent Colors
-  static const Color accent = Color(0xFF06B6D4); // Cyan-500
+  static const Color accent = Color(0xFF06B6D4);      // Cyan-500
   static const Color accentLight = Color(0xFF22D3EE); // Cyan-400
 
   // Semantic Colors
-  static const Color success = Color(0xFF22C55E); // Green-500
-  static const Color successLight = Color(0xFFDCFCE7); // Green-100
-  static const Color warning = Color(0xFFF59E0B); // Amber-500
+  static const Color success = Color(0xFF10B981);     // Emerald-500
+  static const Color successLight = Color(0xFFD1FAE5); // Emerald-100
+  static const Color warning = Color(0xFFF59E0B);     // Amber-500
   static const Color warningLight = Color(0xFFFEF3C7); // Amber-100
-  static const Color error = Color(0xFFEF4444); // Red-500
+  static const Color error = Color(0xFFEF4444);       // Red-500
   static const Color errorLight = Color(0xFFFEE2E2); // Red-100
-  static const Color info = Color(0xFF3B82F6); // Blue-500
-  static const Color infoLight = Color(0xFFDBEAFE); // Blue-100
+  static const Color info = Color(0xFF3B82F6);        // Blue-500
+  static const Color infoLight = Color(0xFFDBEAFE);  // Blue-100
 
-  // Background Colors
-  static const Color backgroundLight = Color(0xFFF9FAFB); // Gray-50
-  static const Color backgroundDark = Color(0xFF111827); // Gray-900
+  // Background Colors (Paper aesthetic)
+  static const Color backgroundLight = Color(0xFFF8FAFC); // Slate-50
+  static const Color backgroundDark = Color(0xFF0F172A);  // Slate-900
 
   // Surface Colors
   static const Color surfaceLight = Color(0xFFFFFFFF);
-  static const Color surfaceDark = Color(0xFF1F2937); // Gray-800
+  static const Color surfaceDark = Color(0xFF1E293B);     // Slate-800
 
   // Text Colors
-  static const Color textPrimaryLight = Color(0xFF111827); // Gray-900
-  static const Color textSecondaryLight = Color(0xFF6B7280); // Gray-500
-  static const Color textPrimaryDark = Color(0xFFF9FAFB); // Gray-50
-  static const Color textSecondaryDark = Color(0xFF9CA3AF); // Gray-400
+  static const Color textPrimaryLight = Color(0xFF0F172A);  // Slate-900
+  static const Color textSecondaryLight = Color(0xFF64748B); // Slate-500
+  static const Color textTertiaryLight = Color(0xFF94A3B8); // Slate-400
+  static const Color textPrimaryDark = Color(0xFFF1F5F9);   // Slate-100
+  static const Color textSecondaryDark = Color(0xFF94A3B8); // Slate-400
 
   // Border Colors
-  static Color borderLight = Colors.grey.shade200;
-  static Color borderDark = Colors.grey.shade700;
+  static const Color borderLight = Color(0xFFE2E8F0);  // Slate-200
+  static const Color borderDark = Color(0xFF475569);   // Slate-600
 
-  // Subject-specific Colors (matching web app)
-  static const Color subjectMath = Color(0xFF3B82F6); // Blue
-  static const Color subjectScience = Color(0xFF22C55E); // Green
-  static const Color subjectLiterature = Color(0xFFA855F7); // Purple
-  static const Color subjectHistory = Color(0xFFF59E0B); // Amber
-  static const Color subjectLanguage = Color(0xFFEC4899); // Pink
-  static const Color subjectArt = Color(0xFF6366F1); // Indigo
-  static const Color subjectMusic = Color(0xFFF43F5E); // Rose
-  static const Color subjectCS = Color(0xFF06B6D4); // Cyan
-  static const Color subjectPE = Color(0xFF84CC16); // Lime
+  // Source Type Colors (matching web nb.* palette)
+  static const Color sourceAssignment = Color(0xFF3B82F6); // Blue
+  static const Color sourceReport = Color(0xFF10B981);     // Emerald
+  static const Color sourceQuiz = Color(0xFF8B5CF6);       // Violet
+  static const Color sourceReading = Color(0xFFF59E0B);    // Amber
+  static const Color sourceEssay = Color(0xFFEC4899);      // Pink
+  static const Color sourceDoubt = Color(0xFF06B6D4);      // Cyan
 
-  // Gradient Definitions
+  // Gradient Definitions (Teal-based)
   static const LinearGradient primaryGradient = LinearGradient(
-    colors: [primary, secondary],
+    colors: [primary, Color(0xFF0891B2)], // Teal to Cyan-600
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
   );
 
   static const LinearGradient cardGradient = LinearGradient(
-    colors: [Color(0xFFFAF5FF), Color(0xFFFDF2F8)], // Purple-50 to Pink-50
+    colors: [Color(0xFFF0FDFA), Color(0xFFECFEFF)], // Teal-50 to Cyan-50
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
-  static const LinearGradient darkCardGradient = LinearGradient(
-    colors: [Color(0xFF2E1065), Color(0xFF500724)], // Purple-950 to Pink-950
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
+  static const LinearGradient subtleGradient = LinearGradient(
+    colors: [Color(0xFFF8FAFC), Color(0xFFF0FDFA)], // Slate-50 to Teal-50
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
   );
 }
